@@ -1,0 +1,112 @@
+from flask import Flask, render_template, request
+from spam_detection_model import train_spam_detection_model
+import os
+from imapclient import IMAPClient
+from email.header import decode_header
+import email
+from email import policy
+from email.parser import BytesParser
+
+app = Flask(__name__, static_url_path='/static')
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+sms_data_path = os.path.join(script_dir, 'sms_dataset.csv')
+mail_data_path = os.path.join(script_dir, 'mail_dataset.csv')
+
+print("Absolute path for SMS dataset:", sms_data_path)
+print("Absolute path for Mail dataset:", mail_data_path)
+
+# Train the model when the application starts
+trained_model, feature_extraction = train_spam_detection_model(mail_data_path, sms_data_path)
+
+def get_imap_client(username, password):
+    return IMAPClient('imap.gmail.com', use_uid=True, ssl=True, port=993)
+
+# Add your mail password here
+mail_password = 'tofl nccl vlrk hvke'
+
+@app.route('/')
+def home():
+    return render_template('emails.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    if request.method == 'POST':
+        sms_input = request.form['sms_input']
+        
+        # Get user inputs
+        email = request.form['email']
+        password = request.form['password']
+
+        # Use IMAP to get emails
+        with get_imap_client(email, password) as client:
+            client.login(email, password)
+            
+            # Example: extracting the body of the first email
+            select_info = client.select_folder('INBOX')
+            messages = client.search()
+            if messages:
+                latest_email_uid = messages[-1]
+                raw_message = client.fetch([latest_email_uid], ['BODY[]'])[latest_email_uid][b'BODY[]']
+
+                # Parse the email message using the email library
+                msg = BytesParser(policy=policy.default).parsebytes(raw_message)
+                email_body = msg.get_body(preferencelist=('plain', 'html')).get_content()
+                
+                # Use the trained model to predict if the email is spam
+                input_data_features = feature_extraction.transform([email_body])
+                spam_prediction = trained_model.predict(input_data_features)[0]
+                
+                # Example of getting accuracy after prediction (replace with your actual calculation)
+                accuracy_on_test_data = 0.85
+
+                # Pass the necessary variables to the template
+                return render_template('index.html',
+                                       prediction="Spam" if spam_prediction == 0 else "Not Spam",
+                                       accuracy_on_test_data=accuracy_on_test_data)
+
+@app.route('/view-emails', methods=['GET', 'POST'])
+def view_emails():
+    if request.method == 'POST':
+        # Get user inputs
+        email = request.form['email']
+        password = request.form['password']
+
+        try:
+            # Use IMAP to get emails
+            with get_imap_client(email, password) as client:
+                client.login(email, password)
+
+                # Example: extracting the subject, sender, date, and snippet of the first 5 emails
+                select_info = client.select_folder('INBOX')
+                messages = client.search()
+                emails = []
+                if messages:
+                    for message_id in messages[-5:]:
+                        raw_message = client.fetch([message_id], ['BODY[]'])[message_id][b'BODY[]']
+
+                        # Parse the email message using the email library
+                        msg = BytesParser(policy=policy.default).parsebytes(raw_message)
+                        subject, encoding = decode_header(msg['Subject'])[0]
+                        if isinstance(subject, bytes):
+                            subject = subject.decode(encoding or 'utf-8')
+                        sender = msg.get('From', 'N/A')
+                        date = msg['Date']
+                        body = msg.get_body(preferencelist=('plain', 'html')).get_content()
+
+                        # Use the trained model to predict if the email is spam
+                        input_data_features = feature_extraction.transform([body])
+                        spam_prediction = trained_model.predict(input_data_features)[0]
+
+                        emails.append({'subject': subject, 'sender': sender, 'date': date, 'body': body, 'spam_prediction': spam_prediction})
+
+                return render_template('emails.html', emails=emails)
+
+        except Exception as e:
+            return render_template('emails.html', error=str(e))
+
+    return render_template('emails.html', emails=[])
+
+if __name__ == '__main__':
+    app.run(debug=True)
