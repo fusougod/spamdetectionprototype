@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Viewer</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .email-container {
+            display: inline-block;
+            text-align: left;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .prediction {
+            color: green; /* Adjust the color as needed */
+        }
+    </style>
+</head>
+<body>
+
+<h1>Gmail Viewer</h1>
+
+<!-- Form to collect user input -->
+<form method="post" action="/view-emails">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
+
+    <button type="submit">View Emails</button>
+</form>
+
+{% if emails %}
+    <div>
+        {% for email in emails %}
+            <div class="email-container">
+                <strong>Subject:</strong> {{ email['subject'] }}<br>
+                <strong>From:</strong> {{ email['sender'] }}<br>
+                <strong>Date:</strong> {{ email['date'] }}<br>
+                <p>{{ email['body'] }}</p>
+                <p class="prediction">Prediction: {{ "Spam" if email['spam_prediction'] == 0 else "Not Spam" }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {% if error %}
+        <p style="color: red;">Error: {{ error }}</p>
+    {% else %}
+        <p>No emails to display.</p>
+    {% endif %}
+{% endif %}
+
+</body>
+</html>
