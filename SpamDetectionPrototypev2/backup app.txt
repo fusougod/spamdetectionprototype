@@ -1,5 +1,4 @@
-# Import redirect and url_for
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from spam_detection_model import train_spam_detection_model
 import os
 from imapclient import IMAPClient
@@ -29,7 +28,7 @@ mail_password = 'tofl nccl vlrk hvke'
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('emails.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -63,7 +62,7 @@ def predict():
                 accuracy_on_test_data = 0.85
 
                 # Pass the necessary variables to the template
-                return render_template('sms.html',
+                return render_template('index.html',
                                        prediction="Spam" if spam_prediction == 0 else "Not Spam",
                                        accuracy_on_test_data=accuracy_on_test_data)
 
@@ -108,19 +107,6 @@ def view_emails():
             return render_template('emails.html', error=str(e))
 
     return render_template('emails.html', emails=[])
-
-@app.route('/get-started')
-def get_started():
-    return render_template('get_started.html')
-
-@app.route('/choose-redirect-html')
-def choose_redirect_html():
-    return render_template('choose_redirect.html')
-
-# Route for SMS detection
-@app.route('/sms')
-def sms():
-    return render_template('sms.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
