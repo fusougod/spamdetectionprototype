@@ -27,6 +27,9 @@ def get_imap_client(username, password):
 # Add your mail password here
 mail_password = 'tofl nccl vlrk hvke'
 
+# List to store blocked senders
+blocked_senders = []
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -79,12 +82,12 @@ def view_emails():
             with get_imap_client(email, password) as client:
                 client.login(email, password)
 
-                # Example: extracting the subject, sender, date, and snippet of the first 5 emails
+                # Example: extracting the subject, sender, date, and snippet of the first 10 emails
                 select_info = client.select_folder('INBOX')
                 messages = client.search()
                 emails = []
                 if messages:
-                    for message_id in messages[-5:]:
+                    for message_id in messages[-10:]:  # Adjust the range to get more emails
                         raw_message = client.fetch([message_id], ['BODY[]'])[message_id][b'BODY[]']
 
                         # Parse the email message using the email library
@@ -93,6 +96,11 @@ def view_emails():
                         if isinstance(subject, bytes):
                             subject = subject.decode(encoding or 'utf-8')
                         sender = msg.get('From', 'N/A')
+
+                        # Check if the sender is blocked
+                        if {'email': email, 'sender': sender} in blocked_senders:
+                            continue  # Skip this email
+
                         date = msg['Date']
                         body = msg.get_body(preferencelist=('plain', 'html')).get_content()
 
@@ -102,12 +110,30 @@ def view_emails():
 
                         emails.append({'subject': subject, 'sender': sender, 'date': date, 'body': body, 'spam_prediction': spam_prediction})
 
-                return render_template('emails.html', emails=emails)
+                return render_template('emails.html', emails=emails, blocked_senders=blocked_senders)
 
         except Exception as e:
             return render_template('emails.html', error=str(e))
 
-    return render_template('emails.html', emails=[])
+    return render_template('emails.html', emails=[], blocked_senders=blocked_senders)
+
+@app.route('/block-sender', methods=['POST'])
+def block_sender():
+    if request.method == 'POST':
+        email = request.form['email']
+        sender_to_block = request.form['sender']
+
+        print(f"Blocking sender: {sender_to_block} for email: {email}")
+
+        # Add logic to check if the sender is already blocked
+        if {'email': email, 'sender': sender_to_block} not in blocked_senders:
+            blocked_senders.append({'email': email, 'sender': sender_to_block})
+            print(f"Sender blocked successfully. Blocked senders: {blocked_senders}")
+        else:
+            print(f"Sender is already blocked. Blocked senders: {blocked_senders}")
+
+        # Redirect back to the view-emails page or any other appropriate page
+        return redirect(url_for('view_emails'))
 
 @app.route('/get-started')
 def get_started():
