@@ -113,3 +113,69 @@ body {
 button {
   cursor: pointer;
 }
+.navbar {
+  display: flex;
+  justify-content: center;
+  background-color: #333;
+  padding: 10px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+}
+
+.navbar a {
+  color: #668bce;
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+}
+
+.navbar a:hover {
+  background-color: rgb(151, 157, 168);
+  color: black;
+}
+.button {
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: #3e4684; /* Same color as the login button */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #555ba9; /* Darker shade on hover */
+}
+.email-results {
+  margin-top: 20px;
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+.email-container {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  max-width: 100%; /* Constrain width to the viewport */
+  overflow-wrap: break-word; /* Break words to prevent overflow */
+}
+
+.email-container strong {
+  color: #333;
+}
+
+.email-container p {
+  color: #555;
+}
+
+/* Style for Spam Prediction */
+.prediction {
+  margin-top: 10px;
+  color: #ff6347; /* Red color for spam prediction */
+}
