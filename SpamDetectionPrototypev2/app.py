@@ -30,45 +30,27 @@ mail_password = 'tofl nccl vlrk hvke'
 # List to store blocked senders
 blocked_senders = []
 
+
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predict_sms', methods=['POST'])
+def predict_sms():
     if request.method == 'POST':
         sms_input = request.form['sms_input']
-        
-        # Get user inputs
-        email = request.form['email']
-        password = request.form['password']
 
-        # Use IMAP to get emails
-        with get_imap_client(email, password) as client:
-            client.login(email, password)
-            
-            # Example: extracting the body of the first email
-            select_info = client.select_folder('INBOX')
-            messages = client.search()
-            if messages:
-                latest_email_uid = messages[-1]
-                raw_message = client.fetch([latest_email_uid], ['BODY[]'])[latest_email_uid][b'BODY[]']
+        input_data_features = feature_extraction.transform([sms_input])
+        my_prediction = trained_model.predict(input_data_features)
 
-                # Parse the email message using the email library
-                msg = BytesParser(policy=policy.default).parsebytes(raw_message)
-                email_body = msg.get_body(preferencelist=('plain', 'html')).get_content()
-                
-                # Use the trained model to predict if the email is spam
-                input_data_features = feature_extraction.transform([email_body])
-                spam_prediction = trained_model.predict(input_data_features)[0]
-                
-                # Example of getting accuracy after prediction (replace with your actual calculation)
-                accuracy_on_test_data = 0.85
+        # Example of getting accuracy after prediction (replace with your actual calculation)
+        accuracy_on_test_data = 0.85
 
-                # Pass the necessary variables to the template
-                return render_template('sms.html',
-                                       prediction="Spam" if spam_prediction == 0 else "Not Spam",
-                                       accuracy_on_test_data=accuracy_on_test_data)
+        # Pass the necessary variables to the template
+        return render_template('sms.html',
+                               prediction="Spam" if my_prediction[0] == 0 else "Not Spam",
+                               accuracy_on_test_data=accuracy_on_test_data)
+
 
 @app.route('/view-emails', methods=['GET', 'POST'])
 def view_emails():
