@@ -1,0 +1,261 @@
+* {
+    font-family: "Poppins";
+  }
+  
+  body {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #dde5f4;
+    height: 100vh;
+  }
+  
+  .screen-1 {
+    background: #f1f7fe;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    box-shadow: 0 0 2em #e6e9f9;
+    gap: 2em;
+  }
+  .screen-1 .logo {
+    margin-top: -3em;
+  }
+  .screen-1 .email {
+    background: white;
+    box-shadow: 0 0 2em #e6e9f9;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    border-radius: 20px;
+    color: #4d4d4d;
+    margin-top: -3em;
+  }
+  .screen-1 .email input {
+    outline: none;
+    border: none;
+  }
+  .screen-1 .email input::-moz-placeholder {
+    color: black;
+    font-size: 0.9em;
+  }
+  .screen-1 .email input:-ms-input-placeholder {
+    color: black;
+    font-size: 0.9em;
+  }
+  .screen-1 .email input::placeholder {
+    color: black;
+    font-size: 0.9em;
+  }
+  .screen-1 .email ion-icon {
+    color: #4d4d4d;
+    margin-bottom: -0.2em;
+  }
+  .screen-1 .password {
+    background: white;
+    box-shadow: 0 0 2em #e6e9f9;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    border-radius: 20px;
+    color: #4d4d4d;
+  }
+  .screen-1 .password input {
+    outline: none;
+    border: none;
+  }
+  .screen-1 .password input::-moz-placeholder {
+    color: black;
+    font-size: 0.9em;
+  }
+  .screen-1 .password input:-ms-input-placeholder {
+    color: black;
+    font-size: 0.9em;
+  }
+  .screen-1 .password input::placeholder {
+    color: black;
+    font-size: 0.9em;
+  }
+  .screen-1 .password ion-icon {
+    color: #4d4d4d;
+    margin-bottom: -0.2em;
+  }
+  .screen-1 .password .show-hide {
+    margin-right: -5em;
+  }
+  .screen-1 .login {
+    padding: 1em;
+    background: #3e4684;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+  }
+  .screen-1 .footer {
+    display: flex;
+    font-size: 0.7em;
+    color: #5e5e5e;
+    gap: 14em;
+    padding-bottom: 10em;
+  }
+  .screen-1 .footer span {
+    cursor: pointer;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  .navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    padding: 10px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    height: 3rem;
+    text-transform: uppercase;   
+    
+  }
+  
+  .navbar a {
+    transition: .5s;
+    color: #668bce;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-family: sans-serif;
+    font-weight: bolder;
+    font-size: 15px;
+   
+  }   
+  
+  .navbar a:hover {
+    background-color: rgb(151, 157, 168);
+    transition: 1s;
+    color: black;
+  }
+  .button {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #3e4684; /* Same color as the login button */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+   
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #555ba9; /* Darker shade on hover */
+  }
+  .email-results {
+    margin-top: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+  }
+  
+  .email-container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    max-width: 100%; /* Constrain width to the viewport */
+    overflow-wrap: break-word; /* Break words to prevent overflow */
+  }
+  
+  .email-container strong {
+    color: #333;
+  }
+  
+  .email-container p {
+    color: #555;
+  }
+  
+  /* Style for Spam Prediction */
+  .prediction {
+    margin-top: 10px;
+    color: #ff6347; /* Red color for spam prediction */
+  }
+  .emailhead .subject{
+    color: #668bce;
+  }
+
+  .buttons{
+    display: flex;
+    gap:10px;
+    margin-top: -90px;
+  }
+  .outcontainer{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sms{
+    margin-top: 8rem;
+    
+    width: 30rem;
+    height: 37rem;
+
+    background-color: #5252525e;
+    max-width: 640px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+
+  }
+  .sms .button{
+    margin-top: 40px;
+      
+    
+  }
+  .email .button{
+    margin-top: 100px;
+   
+    
+  }
+
+  .email{
+    margin-top: 8rem;
+    
+    width: 30rem;
+    height: 37rem;
+
+    background-color: #5252525e;
+    max-width: 640px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+  }
+  .sms .user{
+    width: 300px;
+    margin-top: 10px;
+
+  }
+  .email .user{
+    width: 300px;
+    margin-top: 10px;
+  }

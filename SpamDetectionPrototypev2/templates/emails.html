@@ -10,114 +10,85 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet'
         href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap'>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
-
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        form {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .email-results {
-            max-height: 600px; /* Adjust the max height as needed */
-            overflow-y: auto;
-            margin: 0 auto;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .email-container {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #f9f9f9;
-        }
-
-        .prediction {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='emailstyle.css') }}">
+    
 </head>
 
 <body>
-    <div class="navbar">
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('get_started') }}">Get Started</a>
-    </div>
 
-    <h1>Gmail Viewer</h1>
-
-    <!-- Form to collect user input -->
-    <form method="post" action="/view-emails">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-
-        <button type="submit">View Emails</button>
-    </form>
-
-    <div class="email-results">
-        {% if emails %}
-        <div>
-            {% for email in emails %}
-                {% if email['sender'] not in blocked_senders|map(attribute='sender') %}
-                    <div class="email-container">
-                        <strong>Subject:</strong> {{ email['subject'] }}<br>
-                        <strong>From:</strong> {{ email['sender'] }}<br>
-                        <strong>Date:</strong> {{ email['date'] }}<br>
-                        <p>{{ email['body'] }}</p>
-                        <p class="prediction" style="color: green;">Prediction: {{ "Spam" if email['spam_prediction'] == 0 else "Not Spam" }}</p>
-                        
-                        <!-- Add block sender form -->
-                        <form method="post" action="{{ url_for('block_sender') }}">
-                            <input type="hidden" name="email" value="{{ email['sender'] }}">
-                            <input type="hidden" name="sender" value="{{ email['sender'] }}">
-                            <button type="submit">Block Sender</button>
-                        </form>
-                    </div>
-                {% endif %}
-            {% endfor %}
+        <div class="navbar">
+                
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('get_started') }}">Get Started</a>
+                <a href="/sms">SMS Detection</a>
+                <a href="/view-emails">Email Detection</a>
+            
         </div>
-        {% else %}
-        {% if error %}
-        <p style="color: red;">Error: {{ error }}</p>
-        {% else %}
-        <p>No emails to display.</p>
-        {% endif %}
-        {% endif %}
+        <div class="container">
+            <div class="logincontainer">
+                
+                <img src="{{ url_for('static', filename='usericon.png') }}" class="user">
+                <div class="login">
+                    <div class="innerlogin">
+                        <h1 class="title">Gmail Viewer</h1>
+                        
+                        <!-- Form to collect user input -->
+                        <form class="form" method="post" action="/view-emails">
+                            <label for="email"></label>
+                            <input type="email" id="email" name="email" placeholder="Email" ><br>
+
+                            <label for="password"></label>
+                            <input type="password" id="password" name="password" placeholder="Password"  ><br>
+
+                            <button type="submit" class="submitbtn">Login</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            <div class="email-results">
+                {% if emails %}
+                <div>
+                    {% for email in emails %}
+                        {% if email['sender'] not in blocked_senders|map(attribute='sender') %}
+                            <div class="email-container">
+                                <div class="emailhead">
+                                    <strong class="subject">Subject:</strong> {{ email['subject'] }}<br>
+                                    <strong class="from">From:</strong> {{ email['sender'] }}<br>
+                                    <strong class="date">Date:</strong> {{ email['date'] }}<br>
+                                </div>
+
+                                <p class="emailbody">{{ email['body'] }}</p>
+                                <p class="prediction">Prediction: {{ "Spam" if email['spam_prediction'] == 0 else "Not Spam" }}</p>
+                                
+                                <!-- Add block sender form -->
+                                <form method="post" action="{{ url_for('block_sender') }}">
+                                    <input type="hidden" name="email"  value="{{ email['sender'] }}">
+                                    <input type="hidden" name="sender" value="{{ email['sender'] }}">
+                                   
+                                    <button type="submit" class="blockbtn">Block Sender</button>
+                                    
+                                </form>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                {% if error %}
+                <p style="color: red;">Error: {{ error }}</p>
+                {% else %}
+                <div class="missing">
+                <p>No emails to display.</p>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
     </div>
+
 </body>
 <script>
-  // Auto-refresh every 30 seconds (adjust the time interval as needed)
-  setInterval(function() {
-      location.reload();
-  }, 30000);
+   //Auto-refresh every 30 seconds (adjust the time interval as needed)
+  //setInterval(function() {
+ // location.reload();
+ //},160000);
 </script>
 </html>

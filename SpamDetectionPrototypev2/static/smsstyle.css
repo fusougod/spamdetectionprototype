@@ -1,0 +1,132 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    padding: 10px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    height: 3rem;
+    text-transform: uppercase;   
+    
+}
+
+.navbar a {
+    transition: .5s;
+    color: #668bce;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-family: sans-serif;
+    font-weight: bolder;
+    font-size: 15px;
+   
+}   
+
+.navbar a:hover {
+    background-color: rgb(151, 157, 168);
+    transition: 1s;
+    color: black;
+  }
+
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin:0;
+    padding:0;
+    background-image: url('/static/bg.jpg');
+    background-size: cover;
+    overflow: hidden;
+  }
+
+  .container{
+    margin-top: 8rem;
+    background-color: antiquewhite;
+    width: 60rem;
+    height: 37rem;
+
+    background-color: #f8f8f85e;
+    max-width: 640px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+  }
+
+  .container1{
+    margin-top: 7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+  }
+
+  .container .title {
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 35px;
+    margin-top: 80px;
+     
+    
+  }
+
+  .formdiv{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .textbox {
+    height: 13rem;
+    width: 40rem;
+    border-color: transparent;
+    
+  }
+  .submit{
+    transition: 1s;
+    font-family: Poppins;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    
+    margin-top: 10px;
+    width: 200px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 16px;
+   /* background: linear-gradient(100deg, #46616b -5.85%, #423e58 109.55%);*/
+    box-shadow: 0px 8px 21px 0px rgba(0, 0, 0, 0.16);
+    background-color:rgb(67, 117, 224);
+    color: #FFF;
+
+   
+    border: none;
+    border-radius: 5px;
+    
+  }
+
+  .submit:hover {
+    
+    /*background: linear-gradient(100deg, #e49cfa -5.85%, #9c8cf7 109.55%);*/
+    transition: 1s;
+    background-color: rgb(14, 0, 143);
+  }
+  
+  .user{
+    position:absolute;
+    width: 9%;
+    height:auto;
+    transform: translate(50%, -50%);
+    margin-left: 15px;
+    z-index: 2;
+    margin-right: 250px;
+    padding-bottom: 50px;
+    width: 250px;
+
+  }

@@ -5,71 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMS Prediction</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            background-color: #f2f2f2;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
-        }
-
-        label {
-            font-size: 18px;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        p {
-            font-size: 20px;
-            margin-top: 20px;
-        }
-    </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='smsstyle.css') }}">  
 </head>
 
 <body>
-    <div class="container">
-        <h2>SMS Prediction</h2>
-        <form action="{{ url_for('predict_sms') }}" method="post">
-            <label for="sms_input">Enter SMS:</label>
-            <input type="text" id="sms_input" name="sms_input" placeholder="Type your SMS message..." required>
-            <button type="submit">Predict</button>
-        </form>
-        {% if prediction %}
-            <p>Prediction: {{ prediction }}</p>
-            <p class="accuracy">Accuracy: {{ accuracy_on_test_data * 100 }}%</p>
-        {% endif %}
+    <div class="navbar">
+                
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('get_started') }}">Get Started</a>
+        <a href="/sms">SMS Detection</a>
+        <a href="/view-emails">Email Detection</a>
+    
+</div>
+    <div class="container1">
+        <img src="{{ url_for('static', filename='smslogo.png') }}" class="user">
+        <div class="container">
+            <h2 class="title">SMS Prediction</h2>
+            <form action="{{ url_for('predict_sms') }}" method="post" class="form">
+                <div class="formdiv">
+                
+                <textarea class="textbox" type="text" id="sms_input" name="sms_input" placeholder="Type your SMS message..." required cols="50" rows="10"></textarea>
+                <button class="submit" type="submit">Predict</button>
+            </div>
+            </form>
+            {% if prediction %}
+                <p>Prediction: {{ prediction }}</p>
+            {% endif %}
+        </div>
     </div>
 </body>
 
